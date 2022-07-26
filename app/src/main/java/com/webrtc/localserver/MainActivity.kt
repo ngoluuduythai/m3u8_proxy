@@ -148,7 +148,7 @@ class MainActivity : BaseActivity() {
 
     private fun parseStreamUrl(url: String): String? {
                //https://wowza.peer5.com/live/smil:bbb_abr.smil/chunklist_b591000.m3u8
-        return "http://127.0.0.1:49809/live/smil:bbb_abr.smil/chunklist_b591000.m3u8"
+        return "http://127.0.0.1:49809/master.m3u8"
     }
 
     private fun refreshRatio() {
