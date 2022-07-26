@@ -58,22 +58,37 @@ class MainActivity : BaseActivity() {
         val dataChannel = object : ZenDataChannel{
             override fun getTsSegment(name: String): List<UByte>? {
                 println("Rust =============== getTsSegment $name")
-                return mutableListOf()
+                val id = when(name){
+                    "segment1_0_av.ts" -> R.raw.segment1_0_av
+                    "segment2_0_av.ts" -> R.raw.segment2_0_av
+                    "segment3_0_av.ts" -> R.raw.segment3_0_av
+                    "segment4_0_av.ts" -> R.raw.segment4_0_av
+                    else -> R.raw.segment1_0_av
+                }
+
+                val result = resources.openRawResource(id)
+
+                return result.readBytes().asUByteArray().asList()
             }
 
             override fun getMasterPlaylist(): List<UByte>? {
                 println("Rust =============== getMasterPlaylist ")
                 val m3u8 =
-                "#EXTM3U\n"+
-                "#EXT-X-TARGETDURATION:10\n"+
-                "#EXT-X-VERSION:3\n"+
-                "#EXTINF:9.009,\n"+
-                "first.ts\n"+
-                "#EXTINF:9.009,\n"+
-                "second.ts\n"+
-                "#EXTINF:3.003,\n"+
-                "third.ts\n"+
-                "#EXT-X-ENDLIST"
+                            "#EXTM3U\n"+
+                            "#EXT-X-TARGETDURATION:10\n"+
+                            "#EXT-X-ALLOW-CACHE:YES\n"+
+                            "#EXT-X-PLAYLIST-TYPE:VOD\n"+
+                            "#EXT-X-VERSION:3\n"+
+                            "#EXT-X-MEDIA-SEQUENCE:1\n"+
+                            "#EXTINF:10.000,\n"+
+                            "segment1_0_av.ts\n"+
+                            "#EXTINF:10.000,\n"+
+                            "segment2_0_av.ts\n"+
+                            "#EXTINF:10.000,\n"+
+                            "segment3_0_av.ts\n"+
+                            "#EXTINF:10.000,\n"+
+                            "segment4_0_av.ts\n"+
+                            "#EXT-X-ENDLIST";
 
                 println("Rust m3u8 dummy $m3u8")
 
