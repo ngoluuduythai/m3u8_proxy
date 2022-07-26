@@ -44,7 +44,7 @@ open class RustBuffer : Structure() {
 
     companion object {
         internal fun alloc(size: Int = 0) = rustCall() { status ->
-            _UniFFILib.INSTANCE.ffi_M3U8ProxyServer_181a_rustbuffer_alloc(size, status).also {
+            _UniFFILib.INSTANCE.ffi_M3U8ProxyServer_8f05_rustbuffer_alloc(size, status).also {
                 if (it.data == null) {
                     throw RuntimeException("RustBuffer.alloc() returned null data pointer (size=$size)")
                 }
@@ -52,7 +52,7 @@ open class RustBuffer : Structure() {
         }
 
         internal fun free(buf: RustBuffer.ByValue) = rustCall() { status ->
-            _UniFFILib.INSTANCE.ffi_M3U8ProxyServer_181a_rustbuffer_free(buf, status)
+            _UniFFILib.INSTANCE.ffi_M3U8ProxyServer_8f05_rustbuffer_free(buf, status)
         }
     }
 
@@ -263,48 +263,43 @@ internal interface _UniFFILib : Library {
         }
     }
 
-    fun ffi_M3U8ProxyServer_181a_M3U8ProxyServer_object_free(
+    fun ffi_M3U8ProxyServer_8f05_M3U8ProxyServer_object_free(
         `ptr`: Pointer,
         _uniffi_out_err: RustCallStatus
     ): Unit
 
-    fun M3U8ProxyServer_181a_M3U8ProxyServer_new(
+    fun M3U8ProxyServer_8f05_M3U8ProxyServer_new(
+        `datachannel`: Long,
         _uniffi_out_err: RustCallStatus
     ): Pointer
 
-    fun M3U8ProxyServer_181a_M3U8ProxyServer_call(
-        `ptr`: Pointer,
-        `datachannel`: Long,
-        _uniffi_out_err: RustCallStatus
-    ): Unit
-
-    fun M3U8ProxyServer_181a_M3U8ProxyServer_start_server(
+    fun M3U8ProxyServer_8f05_M3U8ProxyServer_start_server(
         `ptr`: Pointer,
         `port`: Int,
         _uniffi_out_err: RustCallStatus
     ): Unit
 
-    fun ffi_M3U8ProxyServer_181a_ZenDataChannel_init_callback(
+    fun ffi_M3U8ProxyServer_8f05_ZenDataChannel_init_callback(
         `callbackStub`: ForeignCallback,
         _uniffi_out_err: RustCallStatus
     ): Unit
 
-    fun ffi_M3U8ProxyServer_181a_rustbuffer_alloc(
+    fun ffi_M3U8ProxyServer_8f05_rustbuffer_alloc(
         `size`: Int,
         _uniffi_out_err: RustCallStatus
     ): RustBuffer.ByValue
 
-    fun ffi_M3U8ProxyServer_181a_rustbuffer_from_bytes(
+    fun ffi_M3U8ProxyServer_8f05_rustbuffer_from_bytes(
         `bytes`: ForeignBytes.ByValue,
         _uniffi_out_err: RustCallStatus
     ): RustBuffer.ByValue
 
-    fun ffi_M3U8ProxyServer_181a_rustbuffer_free(
+    fun ffi_M3U8ProxyServer_8f05_rustbuffer_free(
         `buf`: RustBuffer.ByValue,
         _uniffi_out_err: RustCallStatus
     ): Unit
 
-    fun ffi_M3U8ProxyServer_181a_rustbuffer_reserve(
+    fun ffi_M3U8ProxyServer_8f05_rustbuffer_reserve(
         `buf`: RustBuffer.ByValue,
         `additional`: Int,
         _uniffi_out_err: RustCallStatus
@@ -563,18 +558,16 @@ abstract class FFIObject(
 
 public interface M3u8ProxyServerInterface {
 
-    fun `call`(`datachannel`: ZenDataChannel)
-
     fun `startServer`(`port`: UInt)
 }
 
 class M3u8ProxyServer(
     pointer: Pointer
 ) : FFIObject(pointer), M3u8ProxyServerInterface {
-    constructor() :
+    constructor(`datachannel`: ZenDataChannel) :
             this(
                 rustCall() { _status ->
-                    _UniFFILib.INSTANCE.M3U8ProxyServer_181a_M3U8ProxyServer_new(_status)
+                    _UniFFILib.INSTANCE.M3U8ProxyServer_8f05_M3U8ProxyServer_new(FfiConverterTypeZenDataChannel.lower(`datachannel`), _status)
                 })
 
     /**
@@ -587,21 +580,14 @@ class M3u8ProxyServer(
      */
     protected override fun freeRustArcPtr() {
         rustCall() { status ->
-            _UniFFILib.INSTANCE.ffi_M3U8ProxyServer_181a_M3U8ProxyServer_object_free(this.pointer, status)
+            _UniFFILib.INSTANCE.ffi_M3U8ProxyServer_8f05_M3U8ProxyServer_object_free(this.pointer, status)
         }
     }
-
-    override fun `call`(`datachannel`: ZenDataChannel) =
-        callWithPointer {
-            rustCall() { _status ->
-                _UniFFILib.INSTANCE.M3U8ProxyServer_181a_M3U8ProxyServer_call(it, FfiConverterTypeZenDataChannel.lower(`datachannel`), _status)
-            }
-        }
 
     override fun `startServer`(`port`: UInt) =
         callWithPointer {
             rustCall() { _status ->
-                _UniFFILib.INSTANCE.M3U8ProxyServer_181a_M3U8ProxyServer_start_server(it, FfiConverterUInt.lower(`port`), _status)
+                _UniFFILib.INSTANCE.M3U8ProxyServer_8f05_M3U8ProxyServer_start_server(it, FfiConverterUInt.lower(`port`), _status)
             }
         }
 }
@@ -780,7 +766,7 @@ public object FfiConverterTypeZenDataChannel : FfiConverterCallbackInterface<Zen
 ) {
     override fun register(lib: _UniFFILib) {
         rustCall() { status ->
-            lib.ffi_M3U8ProxyServer_181a_ZenDataChannel_init_callback(this.foreignCallback, status)
+            lib.ffi_M3U8ProxyServer_8f05_ZenDataChannel_init_callback(this.foreignCallback, status)
         }
     }
 }

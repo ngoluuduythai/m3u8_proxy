@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uniffi.M3U8ProxyServer.M3u8ProxyServer
 import uniffi.M3U8ProxyServer.ZenDataChannel
-import uniffi.m3u8_proxy.startM3u8Proxy
 
 class MainActivity : BaseActivity() {
     private val hls1 = "https://video.cdnbye.com/0cf6732evodtransgzp1257070836/e0d4b12e5285890803440736872/v.f100220.m3u8"
@@ -64,12 +63,25 @@ class MainActivity : BaseActivity() {
 
             override fun getMasterPlaylist(): List<UByte>? {
                 println("Rust =============== getMasterPlaylist ")
-                return mutableListOf()
+                val m3u8 = mutableListOf("#EXTM3U\n",
+                "#EXT-X-TARGETDURATION:10\n",
+                "#EXT-X-VERSION:3\n",
+                "#EXTINF:9.009,\n",
+                "first.ts\n",
+                "#EXTINF:9.009,\n",
+                "second.ts\n",
+                "#EXTINF:3.003,\n",
+                "third.ts\n",
+                "#EXT-X-ENDLIST",
+                )
+                val m3u8Dummy = m3u8.joinToString()
+
+                return m3u8Dummy.toByteArray().asUByteArray().asList()
             }
 
         }
-        val m3u8ProxyServer =  M3u8ProxyServer()
-        m3u8ProxyServer.call(datachannel = dataChannel)
+        val m3u8ProxyServer =  M3u8ProxyServer(dataChannel)
+        //m3u8ProxyServer.call(datachannel = dataChannel)
 
         CoroutineScope(Dispatchers.IO).launch {
             m3u8ProxyServer.startServer(49809.toUInt())
