@@ -63,20 +63,21 @@ class MainActivity : BaseActivity() {
 
             override fun getMasterPlaylist(): List<UByte>? {
                 println("Rust =============== getMasterPlaylist ")
-                val m3u8 = mutableListOf("#EXTM3U\n",
-                "#EXT-X-TARGETDURATION:10\n",
-                "#EXT-X-VERSION:3\n",
-                "#EXTINF:9.009,\n",
-                "first.ts\n",
-                "#EXTINF:9.009,\n",
-                "second.ts\n",
-                "#EXTINF:3.003,\n",
-                "third.ts\n",
-                "#EXT-X-ENDLIST",
-                )
-                val m3u8Dummy = m3u8.joinToString()
+                val m3u8 =
+                "#EXTM3U\n"+
+                "#EXT-X-TARGETDURATION:10\n"+
+                "#EXT-X-VERSION:3\n"+
+                "#EXTINF:9.009,\n"+
+                "first.ts\n"+
+                "#EXTINF:9.009,\n"+
+                "second.ts\n"+
+                "#EXTINF:3.003,\n"+
+                "third.ts\n"+
+                "#EXT-X-ENDLIST"
 
-                return m3u8Dummy.toByteArray().asUByteArray().asList()
+                println("Rust m3u8 dummy $m3u8")
+
+                return m3u8.toByteArray().asUByteArray().asList()
             }
 
         }
